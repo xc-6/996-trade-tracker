@@ -37,7 +37,7 @@ const formSchema = z.object({
       },
       {
         message: "Stock code must start with SH, SZ, US, or HK; Case-sensitive",
-      }
+      },
     ),
 });
 
@@ -82,7 +82,7 @@ export const UpdateStockCodeModal = () => {
         onSuccess: () => {
           handleClose();
         },
-      }
+      },
     );
   };
 
