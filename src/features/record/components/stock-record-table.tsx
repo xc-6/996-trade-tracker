@@ -8,7 +8,7 @@ import { BuyRecordTable } from "./buy-record-table";
 import { cn, numberFormatter, reverseMapping } from "@/lib/utils";
 import { useStocksState } from "@/features/stock/store/use-stocks-store";
 import { Fragment, useEffect, useMemo } from "react";
-import { Trash2, MoveDown, MoveUp } from "lucide-react";
+import { Trash2, MoveDown, MoveUp, Pencil } from "lucide-react";
 import { ResponseType } from "../hooks/use-get-records-by-stock";
 import { useDeleteStockGroups } from "../hooks/use-delete-stock-groups";
 import { totalUnsoldAmount } from "../deafult";
@@ -236,6 +236,11 @@ export const StockRecordTable = (props: {
               e.stopPropagation();
             }}
           />
+          <Pencil
+            size={16}
+            className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
+            onClick={(e) => onUpdateStockCode(e, item)}
+          />
           <Trash2
             size={16}
             className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer"
@@ -309,6 +314,11 @@ export const StockRecordTable = (props: {
         },
       });
     }
+  };
+
+  const onUpdateStockCode = (e: React.MouseEvent, item: StockRecord) => {
+    e.stopPropagation();
+    onOpen("updateStockCode", { stockRecord: item });
   };
 
   useEffect(() => {

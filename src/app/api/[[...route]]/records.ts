@@ -255,5 +255,63 @@ const app = new Hono()
 
       return c.json({ message: "Records deleted successfully" }, 200);
     },
+  )
+  .post(
+    "/update-stock-code",
+    verifyAuth(),
+    zValidator(
+      "json",
+      z.object({
+        oldStockCode: z.string().min(1),
+        newStockCode: z.string().min(1),
+      }),
+    ),
+    async (c) => {
+      const auth = c.get("authUser");
+
+      if (!auth.token?.id) {
+        return c.json({ error: "Unauthorized" }, 401);
+      }
+
+      await db();
+
+      const { oldStockCode, newStockCode } = c.req.valid("json");
+
+      // Get user to verify they own the records
+      const user = await users.findById(auth.token.id);
+      if (!user) {
+        return c.json({ error: "User not found" }, 404);
+      }
+
+      const userAccountIds =
+        user.accounts?.map((account) => String(account._id)) ?? [];
+
+      // Update all buy records with the old stock code for this user's accounts
+      const updateResult = await buyRecords.updateMany(
+        {
+          stockCode: oldStockCode,
+          accountId: { $in: userAccountIds },
+        },
+        {
+          $set: { stockCode: newStockCode },
+        },
+      );
+
+      // Update all dividend batch records with the old stock code for this user's accounts
+      await divBatchRecords.updateMany(
+        {
+          stockCode: oldStockCode,
+          accountIds: { $in: userAccountIds.map((id) => new ObjectId(id)) },
+        },
+        {
+          $set: { stockCode: newStockCode },
+        },
+      );
+
+      return c.json({
+        message: "Stock code updated successfully",
+        modifiedCount: updateResult.modifiedCount,
+      });
+    },
   );
 export default app;
