@@ -11,7 +11,8 @@ export type ModalType =
   | "createRecordUpload"
   | "createDivBatch"
   | "editDivBatch"
-  | "deleteAccount";
+  | "deleteAccount"
+  | "updateStockCode";
 
 interface ModalData {
   account?: z.infer<typeof Account> & { _id: string };
@@ -20,6 +21,7 @@ interface ModalData {
   buyRecordId?: string;
   stockCode?: string;
   divBatch?: DivBatch;
+  stockRecord?: any;
 }
 
 interface ModalStore {
