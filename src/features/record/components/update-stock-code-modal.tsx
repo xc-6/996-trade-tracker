@@ -36,7 +36,7 @@ const formSchema = z.object({
         return VALID_PREFIXES.includes(prefix as any);
       },
       {
-        message: "Stock code must start with SH, SZ, US, or HK; Case-sensitive",
+        message: "Stock code must start with SH, SZ, US, or HK; Case Sensitive",
       },
     ),
 });
