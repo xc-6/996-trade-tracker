@@ -304,7 +304,7 @@ export const DataTable = <T,>(props: DataTableProps<T>) => {
 
     const renderFilters = () => {
       return (
-        <ScrollArea className="h-72 rounded-md">
+        <ScrollArea className="h-[min(65vh,36rem)] rounded-md">
           <div className="flex flex-col">
             {filters.map((item) => (
               <Fragment key={item.value}>
@@ -412,7 +412,7 @@ export const DataTable = <T,>(props: DataTableProps<T>) => {
             )}
           />
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent className="w-96">
           <div>
             {filters?.length > 0 ? renderFilters() : renderOtherFilter()}
             <div className="flex justify-end mt-4">

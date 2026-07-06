@@ -15,6 +15,7 @@ import { totalUnsoldAmount } from "../deafult";
 import { StockInfo } from "@/lib/types";
 import { useModal } from "@/hooks/use-modal-store";
 import { useStockCurrencyInfo } from "@/features/stock/hooks/use-stock-currency-info";
+import { useGetStockcodes } from "@/features/stock/hooks/use-get-stockcodes";
 import { CURRENCY_GROUP } from "@/lib/const";
 
 type StockRecord = ResponseType["data"][0] &
@@ -39,6 +40,7 @@ export const StockRecordTable = (props: {
   const { onOpen } = useModal();
   const { stocksState } = useStocksState();
   const { activeIds } = useActiveAccounts();
+  const { data: stockcodes } = useGetStockcodes(activeIds ?? []);
   const { data, isLoading, refetch } = useGetRecordsByStock(activeIds ?? []);
   const { asset, cost } = useStockCurrencyInfo();
   const removeMutation = useDeleteStockGroups();
@@ -79,6 +81,21 @@ export const StockRecordTable = (props: {
         );
       },
       sortable: "local",
+      filterable: "local",
+      filters:
+        stockcodes?.map((code) => ({
+          label: () => (
+            <>
+              <Badge variant="outline" className="mr-2 inline-block">
+                {code.slice(0, 2)}
+              </Badge>
+              <span className="inline-block align-middle">
+                {code.slice(2)} {stocksState?.get(code)?.name}
+              </span>
+            </>
+          ),
+          value: code,
+        })) ?? [],
     },
     {
       key: "name",

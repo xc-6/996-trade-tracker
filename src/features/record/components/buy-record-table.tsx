@@ -112,7 +112,7 @@ export const BuyRecordTable = ({
               <Badge variant="outline" className="mr-2 inline-block">
                 {code.slice(0, 2)}
               </Badge>
-              <span className="truncate inline-block w-[60%] align-middle">
+              <span className="inline-block align-middle">
                 {code.slice(2)} {stocksState?.get(code)?.name}
               </span>
             </>
