@@ -412,7 +412,7 @@ export const DataTable = <T,>(props: DataTableProps<T>) => {
             )}
           />
         </PopoverTrigger>
-        <PopoverContent>
+        <PopoverContent className="w-96">
           <div>
             {filters?.length > 0 ? renderFilters() : renderOtherFilter()}
             <div className="flex justify-end mt-4">
